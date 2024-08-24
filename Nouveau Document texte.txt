@@ -1,0 +1,8 @@
+user:{id:user._id,username:user.username,email:user.email,role:user.role,formation:user.formation},
+
+      dispatch(
+        loginSuccess({ user: response.data.user })
+      );
+
+
+              dispatch(loginFailure({ error: error.message }));

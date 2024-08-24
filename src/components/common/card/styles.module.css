@@ -1,0 +1,116 @@
+.curent {
+  color: white;
+  background-color: var(--mainColor);
+}
+.title{
+  align-self: start;
+}
+
+
+
+.formatiosnSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-block: 60px;
+
+}
+.formationList {
+  display: flex;
+  justify-content: center;
+  width: 110%;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+
+.formationItem {
+  list-style: none;
+  text-decoration: none;
+  margin: 10px;
+  border: rgba(209, 208, 208, 0.579) 2px solid;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 4px;
+  position: relative;
+  background-color: white;;
+  height: 400px;
+}
+.formationItem:hover{
+  box-shadow:  #00000063 0px 3px 2px 0px;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+.formationItem img{
+  border-radius: 11px;
+  width: 100%;
+  height: 50%;
+
+}
+.formationItem .creator{
+  color: #838383;
+  font-size: 16px;
+  margin: 8px;
+  font-weight:300;
+}
+.formationItem .name{
+  font-size: 16px;
+  font-weight: 500;
+  margin: 8px;
+
+  align-self: center;
+  color: var(--mainColor);
+}
+.formationItem .desc{
+  font-size: 16px;
+  margin: 8px;
+
+  font-weight:300;
+}
+
+.formationItem .btn{
+  align-self: center;
+  margin: 20px;
+}
+.cursor:hover{
+  cursor: pointer;
+  background-color: var(--mainColor);
+  color: white;
+  transform: scale(1.2);
+}
+
+.bagde{
+  background-color: rebeccapurple;
+}
+.bagdeContent{
+  position: absolute;
+  right: 0;
+}
+.plus{
+  width: 35%;
+  height: 80%;
+  background-color: #838383;
+}
+.plusContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(245,247,248);
+  border: none;
+  
+}
+.plusContainer >:first-child{
+  width: 50%;
+  height: 50%;
+  color: var(--mainColor);
+
+}
+.plusContainer:hover{
+  background-color: var(--mainColor);
+}
+.plusContainer:hover :first-child{
+  color: aliceblue;
+}

@@ -1,0 +1,60 @@
+.users-1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.users-2 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+.users-3 {
+  grid-template-columns:  repeat(4, 1fr) ;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+    "user-1 user-1 user-2 user-2"
+    ". user-3 user-3 .";
+}
+
+.users-4 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.users-5 {
+  grid-template-columns:  repeat(6, 1fr) ;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+    "user-1 user-1 user-2 user-2 user-3 user-3"
+    ". user-4 user-4 user-5 user-5 .";
+}
+
+.users-6 {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.users-7 {
+  grid-template-columns:  repeat(8, 1fr) ;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+    "user-1 user-1 user-2 user-2 user-3 user-3 user-4 user-4"
+    ". user-5 user-5 user-6 user-6 user-7 user-7 .";
+}
+
+.users-8 {
+  grid-template-columns:  repeat(6, 1fr) ;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: 
+    "user-1 user-1 user-2 user-2 user-3 user-3"
+    "user-4 user-4 user-5 user-5 user-6 user-6"
+    ". user-7 user-7 user-8 user-8 .";
+}
+
+.users-scroll {
+  grid-template-columns: 1fr 1fr 1fr;
+  overflow-y: auto; /* Enable scroll for overflow */
+}
+.gap{
+  gap: 10px;
+}

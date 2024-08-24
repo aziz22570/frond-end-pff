@@ -1,0 +1,271 @@
+.showVideo{
+background: #000;
+}
+.hideVideo{
+  background-color: rgb(32,33,36);
+}
+.video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+
+}
+.videoContainer{
+  width: 40%;
+  height: 50%;
+  margin: 100px;
+  position: relative;
+  border-radius: 15px;
+  box-shadow: #000 -1px 2px 6px 0px;
+}
+
+
+.container{
+  width: 100%;
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.videoButtonContainer{
+  position: absolute;
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  display: flex;
+  
+}
+.videoButtonContainer button{
+  margin-inline: 20px;
+}
+.homeFormContainer{
+  width: 30%;
+  margin-left: 5%;
+}
+.cameraIcon {
+  fill: rebeccapurple; /* Default fill color for the entire icon */
+
+}
+
+/* Targeting the inner circle using a more specific selector */
+.cameraIcon svg path:nth-of-type(2) {
+  fill: white; /* Default fill color for the entire icon */
+
+
+}
+.microIcon{
+  fill: rebeccapurple; /* Default fill color for the entire icon */
+
+}
+
+
+.roomContainer{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f7f8;
+}
+.navBar{
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.navBar > .buttonBox{
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+
+}
+.navBar > .leaveBtn{
+  margin-right: 20px;
+  background-color: #dc3545;
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 30px;
+  padding: 10px;
+
+}
+
+.roomVideosContainer{
+  display: flex;
+  overflow: hidden;
+  height: 90vh;
+  display: grid;
+  justify-items:center;
+  align-items: center;
+  flex:15;
+
+
+}
+.roomVideoContainer{
+    border-radius: 20px;
+    box-shadow: #000 -1px 2px 6px 0px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 90%;
+    width: 85%;
+}
+.sidebar{
+  flex: 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  height: 90%;
+  margin-right: 4%;
+
+}
+.main{
+  display: flex;
+  height: 100%;
+  align-items: center;
+  box-sizing: border-box;
+
+
+}
+.chatBox{
+  width: 95%;
+  height: 90%;
+  background-color: #fff;
+  border-radius: 15px;
+}
+
+
+.roomVideoContainer > video{
+  border-radius: 20px;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover ;
+}
+/* .parent{
+  width:400px;
+  height:400px;
+    display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr); 
+} */
+
+
+.users1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 
+    "vid1";
+}
+
+.users2 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+    grid-template-areas: 
+    "vid1 vid2";
+}
+
+.users3 {
+  grid-template-columns:  repeat(4, 1fr) ;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+    "vid1 vid1 vid2 vid2"
+    ". vid3 vid3 .";
+}
+
+.users4 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+  "vid1 vid2"
+  "vid3 vid4";
+}
+
+.users5 {
+  grid-template-columns:  repeat(6, 1fr) ;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+    "vid1 vid1 vid2 vid2 vid3 vid3"
+    ". vid4 vid4 vid5 vid5 .";
+}
+
+.users6 {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+  "vid1 vid2 vid3"
+  "vid4 vid5 vid6";
+}
+
+.users7 {
+  grid-template-columns:  repeat(8, 1fr) ;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+    "vid1 vid1 vid2 vid2 vid3 vid3 vid4 vid4"
+    ". vid5 vid5 vid6 vid6 vid7 vid7 .";
+}
+
+.users8 {
+  grid-template-columns:  repeat(6, 1fr) ;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: 
+    "vid1 vid1 vid2 vid2 vid3 vid3"
+    "vid4 vid4 vid5 vid5 vid6 vid6"
+    ". vid7 vid7 vid8 vid8 .";
+}
+
+.usersScroll {
+  grid-template-columns: 1fr 1fr 1fr;
+  overflow-y: auto; /* Enable scroll for overflow */
+}
+.gap{
+  gap: 10px;
+}
+.vid1 { grid-area: vid1; }
+.vid2 { grid-area: vid2; }
+.vid3 { grid-area: vid3; }
+.vid4 { grid-area: vid4; }
+.vid5 { grid-area: vid5; }
+.vid6 { grid-area: vid6; }
+.vid7 { grid-area: vid7; }
+.vid8 { grid-area: vid8; }
+
+
+.formContainer{
+  width: 100%;
+  height: 7%;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.formContainer > input{
+  width: 90%;
+  height: 100%;
+  border: none;
+  border-radius: 30px;
+  padding: 20px;
+
+}
+.formContainer > input:focus-visible{
+  outline: #00abe4 1px solid;
+}
+.formContainer > button{
+  color:  #00abe4;
+  background-color: white;
+
+  border-radius: 30px;
+  border: 1px solid #00abe4;
+  padding: 10px 20px;
+}
+.formContainer > button:hover{
+  color:  white;
+  background-color: #00abe4;
+
+
+}

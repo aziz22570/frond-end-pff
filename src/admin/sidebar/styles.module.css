@@ -1,0 +1,135 @@
+.container{
+  width: 100%;
+  height: 100vh;
+}
+.flechContainer{
+  display: flex;
+  width: 100%;
+justify-content: flex-end;
+align-items: center;
+height: 5%;
+padding: 5%;
+margin-bottom: -10%;
+color: #415a71;
+
+}
+.flechContainer > div:hover {
+  cursor: pointer;
+  color: var(--mainColor);
+
+}
+.itemBox{
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.itemBox:hover{
+  background-color: #f2f2f217;
+  cursor: pointer;
+  color: #3192e1;
+}
+.itemBox:hover > .label{
+  color: #3192e1;
+}
+.itemBox:hover > .icon{
+  color: #3192e1;
+}
+
+
+.itemBox > .icon{
+  width: 20%;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+color: #415a71;
+
+
+}
+.itemBox > .label{
+width: 100%;
+padding-left: 10px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+color: #415a71;
+
+
+}
+.menu{
+  height: 32%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 200px;
+}
+.closed{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+}
+.closed > .flechContainer{
+  justify-content: center;
+  align-items: center;
+}
+.btnContainer{
+  margin-bottom: 20px;
+height: 6%;
+display: flex;
+display: flex;
+  justify-content: center;
+
+}
+.btnContainer > button{
+  width: 90%;
+height: 100%;
+  margin: auto;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: #ed5e68;
+  border-radius: 30px;
+  color: white;
+}
+.title{
+  color: #8e51f9;
+margin-bottom: 10%;
+text-align: center;
+
+
+}
+.title > span{
+  color: #3192e1
+}
+.closed >.menu > .itemBox > .icon{
+  width: 100%;
+  color: #415a71;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+
+
+}
+.closed >.menu > .itemBox:hover > .icon{
+  background-color: #3192e1;
+  color: white;
+}
+.closed > .btnContainer> button{
+  width: 100%;
+}
+.active > .label{
+  color: #3192e1;
+}
+.active > .icon{
+  color: #3192e1;
+}
+.closed >.menu > .active > .icon{
+  background-color: #3192e1;
+  color: white;
+}

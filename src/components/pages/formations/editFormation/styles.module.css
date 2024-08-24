@@ -1,0 +1,156 @@
+.container {
+  width: 85%;
+  margin: auto;
+  display: flex;
+}
+
+.btnContainer {
+  display: flex;
+  gap: 5px;
+  justify-content: end;
+  padding-top: 20px;
+  
+}
+
+.absolute {
+  position: absolute;
+  top: 22%;
+  left: 29%;
+}
+.mainContainer{
+  margin-top: 50px;
+}
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 70%;
+  padding: 50px ;
+
+}
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 50px ;
+  position: -webkit-sticky;
+
+  position: sticky;
+  top: 20px;
+  height: 80vh;
+
+
+
+}
+.dataFormation{
+  width: 100%;
+border-radius: 30px;
+background-color: #fff;
+padding: 20px;
+margin-bottom: 50px;
+
+}
+.image{
+  width: 300px;
+  height: 300px;
+background-color: #fff;
+padding: 10px 10px 30px 10px;
+margin-bottom: 50px;
+
+}
+.image img{
+  width: 100%;
+  height: 85%;
+  background-color: gray;
+}
+.participants{
+  width: 100%;
+  background-color: #fff;
+padding: 20px;
+border-radius: 30px;
+height: 50vh;
+min-height: 250px;
+max-height: 500px;
+overflow-y: scroll;
+    scrollbar-width: auto;
+    scrollbar-color: #00abe4 #ffffff;
+
+
+
+}
+.participants::-webkit-scrollbar {
+  width: 12px;
+}
+
+.participants::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.participants::-webkit-scrollbar-thumb {
+  background-color: #00abe4;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+.programme{
+  width: 100%;
+  position: relative;
+background-color: #fff;
+padding: 20px;
+border-radius: 30px;
+
+}
+.right{
+  position: absolute;
+  right: 0%;
+
+}
+.userContainer{
+  padding: 10px 5px;
+  display: flex;
+  justify-content: start;
+  width: 100%;
+}
+.imageUser{
+  width: 10%;
+  height: 90%;
+  margin-right: 20%;
+}
+
+.deleteButton{
+
+color: #ff00007a;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 0.375rem;
+  width: 50px;
+
+  height: 50px;
+  border: #e9ecef solid 1px;
+
+  
+}
+.deleteButton:hover{
+  color: red;
+  cursor: pointer;
+
+}
+.updateButton{
+
+  margin-left: 2%;
+color: #00800091;
+  font-size: 20px;
+  border: #e9ecef solid 1px;
+  border-radius: 0.375rem;
+  width: 50px;
+
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  
+}
+.updateButton:hover{
+  color: green;
+  cursor: pointer;
+
+}

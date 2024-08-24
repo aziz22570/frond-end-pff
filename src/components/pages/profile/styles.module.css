@@ -1,0 +1,126 @@
+.container{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10vh;
+}
+aside{
+  background-color: aqua;
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px 10px;
+  background-color: white;
+  border-radius: 3%;
+
+}
+.imgContainer{
+  width: 10vw;
+  height: 10vw;
+  margin-bottom: 30px;
+}
+.imgContainer img{
+  width: 100%;
+  height: 100%;
+  border-radius: 120px;
+}
+main{
+  background-color: white;
+  width: 75%;
+  border-radius: 3%;
+
+}
+.icon{
+  align-self: end;
+  margin-bottom: 10px;
+}
+.title{
+  margin-bottom: 30px;
+}
+.infoContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  width: 100%;
+  margin: auto;
+  height: 100%;
+  padding: 0;
+}
+.slotContainer,.aboutMe{
+  display: flex;
+  flex: 0 0 70px;
+  justify-content: start;
+  align-items: center;
+  padding : 20px 40px;
+
+}
+.slotContainer:hover{
+  background-color: #f2f2f2a5;
+  cursor: pointer;
+}
+.aboutMe{
+  align-items: start;
+}
+
+.slotContainer>:first-child{
+  width: 96%;
+}
+.aboutMe >:first-child{
+  width: 30%;
+}
+
+
+textarea{
+  resize: none;
+  overflow-y: hidden;
+  border: none;
+  outline: none;
+}
+.btnContainer{
+  display: flex;
+  gap: 5px;
+  justify-content: end;
+  padding-top: 20px;
+}
+.formationContainer{
+  width: 100%;
+  margin-top: 100px;
+  padding: 20px 40px;
+}
+.gridContainer{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  grid-auto-rows: auto;
+  gap: 20px; 
+  border-radius: 3%;
+  margin-top: 50px;
+
+}
+.ratingBox , .readonlybox{
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+  margin: 20px 80px 20px auto;
+  height: 20px;
+
+}
+.readonlybox{
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.emptyRating{
+color: var(--mainColor);
+}
+.fullRating{
+  color: var(--mainColor);
+
+}
+
+.countRating{
+  color: gray;
+}

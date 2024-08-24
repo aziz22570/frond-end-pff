@@ -1,0 +1,11 @@
+.curent {
+  color: white;
+  background-color: var(--mainColor);
+}
+.cursor:hover{
+  cursor: pointer;
+  background-color: var(--mainColor);
+  color: white;
+  transform: scale(1.2);
+}
+
