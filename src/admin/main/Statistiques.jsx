@@ -6,6 +6,8 @@ import useFetchFormer from "../../API/Teacher";
 import { lastMonthStat, useFetchStudent } from "../../API/student";
 import { useFetchFormation } from "../../API/certif";
 import styles from "./styles.module.css";
+import { ThreeCircles } from 'react-loader-spinner'
+
 
 const Statistiques = () => {
   const { Teacher, countFormer, loadingFormer, errorFormer } = useFetchFormer();
@@ -27,6 +29,22 @@ const Statistiques = () => {
     });
   }
   console.log("lastFiveMonthArray", lastFiveMonthArray);
+  if(loading){
+    return (<div className="d-flex justify-content-center align-items-center" style={{
+      width: "100%",
+      height: "100%"
+    }}>
+      <ThreeCircles
+    visible={true}
+    height="100"
+    width="100"
+    color="#rgb(0, 171, 228)"
+    ariaLabel="three-circles-loading"
+    wrapperStyle={{}}
+    wrapperClass=""
+    />;
+      </div>)
+  }
 
   return (
     <div className={styles.statistiquesContainer}>
@@ -39,7 +57,7 @@ const Statistiques = () => {
           <h4 className="mb-3 ">statistics:</h4>
           <p className={styles.ml2}>Number Of Teacher: {countFormer}</p>
           <p className={styles.ml2}>Number Of Student: {studentCount}</p>
-          <p className={styles.ml2}>Moyen Of {studentCount/countFormer} Student For Every Teacher</p>
+          <p className={styles.ml2}>Moyen Of {(studentCount/countFormer).toFixed(2)} Student For Every Teacher</p>
 
         </div>
         <div className={styles.colorContainer}>
@@ -55,7 +73,7 @@ const Statistiques = () => {
 
           </div>
         </div>
-        <div style={{ width: "400px", height: "350px",marginLeft: "35px" }}>
+        <div style={{ width: "500px", height: "350px",marginLeft: "35px" }}>
           {
             <StudentFormerDiagrame
               countFormer={countFormer}
@@ -88,7 +106,7 @@ const Statistiques = () => {
         <div>
           <h4 className="mb-3 ">statistics:</h4>
           <p className={styles.ml2}>Number Of Formation: {count}</p>
-          <p className={styles.ml2}>{count/countFormer} formation created by every Teacher</p>
+          <p className={styles.ml2}>{(count/countFormer).toFixed(2)} formation created by every Teacher</p>
         </div>
         </div>
       </section>
@@ -101,7 +119,7 @@ const Statistiques = () => {
           <h4 className="mb-3 ">statistics:</h4>
           <p className={styles.ml2}>Number Of Teacher: {countFormer}</p>
           <p className={styles.ml2}>Number Of Student: {studentCount}</p>
-          <p className={styles.ml2}>Moyen Of {studentCount/countFormer} Student For Every Teacher</p>
+          <p className={styles.ml2}>Moyen Of {(studentCount/countFormer).toFixed(2)} Student For Every Teacher</p>
 
         </div>
         <div style={{ width: "500px", height: "400px" }}>

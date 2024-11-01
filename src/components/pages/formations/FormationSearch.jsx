@@ -20,10 +20,10 @@ const FormationSearch = () => {
       <Search search={search} reultRef={resultRef}/>
       <div className={styles.formatiosnSection}>
     <h3 ref={resultRef} className={styles.title}> Results: ({results})</h3>
-  <ul className={styles.formationList}>
+  <ul className={styles.gridFormationList}>
     {formations.map((formation) =>(<Card id={formation._id} name={formation.name} price={formation.price} hours={formation.hours} creator={formation.creator} />))}    
   </ul>
-    <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalpage={totalpage} />
+    {formations.length > 20 && <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalpage={totalpage} />}
     </div>
     </div>
   )

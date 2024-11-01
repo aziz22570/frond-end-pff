@@ -28,9 +28,9 @@ useEffect(() =>{
   return (
     <section className={styles.section}>
     <div className={styles.container}>
-      <h1 className={styles.searchTitle}>Navigate Certificates by Category</h1>
+      <h1 className={styles.searchTitle}>Navigate Training by Category</h1>
       <p className={styles.searchText}>
-        Find your certificate effortlessly using our category-based search.
+        Find your Training effortlessly using our category-based search.
         Simply select your area of interest, and discover the perfect
         certification for you.
       </p>

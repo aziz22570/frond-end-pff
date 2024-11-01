@@ -20,6 +20,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Rating from "react-rating";
 import { IoStarOutline, IoStarSharp } from "react-icons/io5";
 import { getRating, rateFormer } from "../../../API/rating";
+import { MdOutlineEmail } from "react-icons/md";
 
 
 const Visitor = () => {
@@ -146,6 +147,9 @@ console.log(response);
       console.error(err);
     }
   }
+  const handleSendEmail = (value)=>{
+    navigate(`/Contact/${user._id}/${user.username}`)
+  }
   
   if(loading){
     return <div>Loading...</div>
@@ -164,8 +168,9 @@ console.log(response);
         </Modal>
       )}
       <div className={styles.container}>
-        <aside>
-          <h5 className={styles.title}>Personal details</h5>
+        <aside className={styles.aside}>
+        
+          <h5 className={styles.title}>Personal details </h5>
           <div className={styles.imgContainer}>
             <img
               src={
@@ -176,7 +181,7 @@ console.log(response);
               alt={`${user?.name}`}
             />
           </div>
-          <h4>{user?.username}</h4>
+          <h4>{user?.username} </h4>
           {user.role === "Teacher" && <li className={`${styles.ratingBox} ${styles.readonlybox}`}>
               <div className={styles.rating}>
               <Rating
@@ -190,6 +195,8 @@ console.log(response);
               <span>{`(${raters || 0})`}</span>
 
             </li>}
+          
+
         </aside>
         <main>
           <ul className={styles.infoContainer}>
@@ -232,22 +239,14 @@ console.log(response);
                   rows={rows}
                   autoCorrect
                 ></textarea>
-                <div className={styles.btnContainer}>
-                  {!show && (
-                    <Button
-                      text="cancel"
-                      type="bgw"
-                      w="w100"
-                      onClick={handleCancel}
-                    />
-                  )}
-                  <Button
-                    text={buttonValue}
-                    type="bgb"
-                    w="w100"
-                    onClick={handleUpdate}
-                  />
+                  <div className={styles.btnContainer} onClick={handleSendEmail}>
+                  <div style={{display: "flex",gap: "10px",alignItems: "flex-end"}}>
+                    <h6>Send Email</h6>  
+                    <MdOutlineEmail size={30} style={{color: "var(--mainColor)"}}/>
+                  </div>
+                
                 </div>
+
               </div>
             </li>
           </ul>

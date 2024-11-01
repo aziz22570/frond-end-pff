@@ -42,3 +42,21 @@
   display: flex;
   list-style: none;
 }
+.dropDownNav > div >div:nth-child(2)> div{
+  padding: unset !important;
+}
+.dropDownNav > div >div:nth-child(2)> div > button{
+  padding: unset !important;
+  display: flex;
+  justify-content: center;
+}
+.dropDownNav > div >div:nth-child(2)> div > button >a{
+  width: 100%;
+}
+.dropDownNav > div >div:nth-child(2){
+  min-width: 160px;
+
+}
+.dropDownNav > div >div:nth-child(2) > div{
+overflow: hidden !important;
+}

@@ -32,14 +32,14 @@ const Formations = () => {
   return (
     <>
       <Search />
-      <Section
+    { formations && <Section
       title="ALL Certificates:"
         formations={formations}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalpage={totalpage}
-      />
-      <Section formations={lastFormations} title="New Certificates"/>
+      />}
+      {lastFormations && <Section formations={lastFormations} title="New Certificates"/>}
       {isLoggedIn && formationsPerso && totalpagePerso !== 0 &&(
         <Section
         title="Certificates Personalisers"

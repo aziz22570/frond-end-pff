@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 import { FaPen } from "react-icons/fa6";
 import { useSelector } from "react-redux";
@@ -19,9 +19,12 @@ import { useUpdateUser } from "../../../API/User";
 import Rating from "react-rating";
 import { IoStarOutline } from "react-icons/io5";
 import { IoStarSharp } from "react-icons/io5";
-import { rateFormer } from "../../../API/rating";
+import { getRating, rateFormer } from "../../../API/rating";
+import { FiUpload } from "react-icons/fi";
+import Swal from "sweetalert2";
 
 const Profile = () => {
+  const hiddenFileInput = useRef(null);
   const user = useSelector((state) => state.user.user);
   const openContactInformationForm = useSelector(
     (state) => state.form.contactInformation
@@ -39,8 +42,28 @@ const Profile = () => {
   const [show, setShow] = useState(true);
   const [buttonValue, setButtonValue] = useState("Update");
   const { formations } = useMyFormation();
-  const [image, setImage] = useState(null);
   const [rating, setRating] = useState(0);
+  const [raters, setRaters] = useState(0);
+  const [err, setErr] = useState(null);
+
+
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const response = await getRating({ teacher: user._id });
+        if (response && response.data) {
+          setRating(response.data.rating);
+          setRaters(response.data.raters);
+        }
+      } catch (err) {
+        setErr('Failed to fetch rating');
+        console.error(err);
+      }
+    };
+
+    fetchRating();
+  }, [ user._id]);
+
 
   const [rows, setRows] = useState(
     textarea.length > 320 ? Math.ceil(textarea.length / 80) : 4
@@ -75,18 +98,25 @@ const Profile = () => {
     setTextarea(user?.about || "right some thing about yourself");
     setButtonValue("Update");
   };
-  const imageHandler = (e) => {
+  const imageHandler = async(e) => {
     const file = e.target.files[0];
-    const formData = new FormData();
+    if (!file.type.startsWith('image/')) {
+      Swal.fire("Please select a valid image file");
+    }
+    else{const formData = new FormData();
     formData.append("file", file);
-    setImage(formData);
+    await updateData(formData, "image");}
+    
   };
-  const updateImageHandler = async () => {
-    await updateData(image, "image");
-  };
+
 const handleRating = (value)=>{
   rateFormer({rater: user._id, rating: value})
 }
+const handleClick = event => {
+  if (!hiddenFileInput || !hiddenFileInput.current) return;
+
+  hiddenFileInput.current.click();
+};
   return (
     <>
       {openContactInformationForm && (
@@ -100,7 +130,7 @@ const handleRating = (value)=>{
         </Modal>
       )}
       <div className={styles.container}>
-        <aside>
+        <aside className={styles.aside}>
           <h5 className={styles.title}>Personal details</h5>
           <div className={styles.imgContainer}>
             <img
@@ -111,30 +141,29 @@ const handleRating = (value)=>{
               }
               alt={`${user.name}`}
             />
-            <input type="file" onChange={imageHandler} />
-            <button onClick={updateImageHandler}>valider</button>
+            <input type="file"  accept="image/*" onChange={imageHandler} ref={hiddenFileInput} hidden/>
+
           </div>
           <h4>{user?.username}</h4>
+          <button className={styles.uploadButton} onClick={handleClick}>Upload {<FiUpload size={22}/>}</button>
+          {user.role === "Teacher" && <li className={`${styles.ratingBox} ${styles.readonlybox}`}>
+              <div className={styles.rating}>
+              <Rating
+                readonly
+                initialRating={rating || 0}
+                  emptySymbol={<IoStarOutline size={30} className={styles.emptyRating}/>}
+                  fullSymbol={<IoStarSharp size={30} className={styles.fullRating} />}
+                  fractions={2}
+                />
+              </div>
+              <span>{`(${raters || 0})`}</span>
+
+            </li>}
         </aside>
 
         <main>
           <ul className={styles.infoContainer}>
-            <li className={styles.ratingBox}>
-              <div className={styles.rating}>
-                <Rating
-                readonly
-                initialRating={rating}
-                  emptySymbol={<IoStarOutline size={30} className={styles.emptyRating}/>}
-                  fullSymbol={<IoStarSharp size={30} className={styles.fullRating} />}
-                  fractions={2}
-                  onClick={(value) => {
-                  handleRating(value);
-                  }}
-                />
-              </div>
 
-              <span className={styles.countRating}>(0)</span>
-            </li>
             <li
               onClick={handleContactInformation}
               className={styles.slotContainer}
@@ -142,6 +171,7 @@ const handleRating = (value)=>{
               <h6>Contact information</h6>
               <IoIosArrowForward className={styles.icon} />
             </li>
+            
 
             <li
               onClick={handleSecuritySetting}
@@ -196,6 +226,7 @@ const handleRating = (value)=>{
               price={formation.price}
               hours={formation.hours}
               creator={formation.creator}
+              image={formation.image}
             />
           ))}
         </div>

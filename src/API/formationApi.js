@@ -246,17 +246,19 @@ export const useUpdateFormation = (id) => {
 
   return { newFormation, fetchData };
 };
-export const usePayFormation = (receiverWalletId,amount,trainingId,trainingName,userId) => {
+export const usePayFormation = () => {
   const dispatch = useDispatch();
 
-  const fetchPayData = async ({trainingId,userId,trainingName}) => {
-    console.log('the user id is', userId);
+  const fetchPayData = async ({trainingId,userId,trainingName,walletId,amount}) => {
+    amount = parseInt(amount, 10)*1000
+    console.log('the user id is', amount);
+
     try {
       const response = await axiosInstance.post(
         `${process.env.REACT_APP_API_URL}/api/v1/konnect`,
         {
-          "receiverWalletId": "66bf833f2090572126fabbb2",
-          "amount": 10000,
+          "receiverWalletId": walletId,
+          "amount": amount,
             "trainingId":trainingId,
           "trainingName":trainingName,
           "userId":userId

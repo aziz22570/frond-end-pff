@@ -23,7 +23,7 @@
   position: absolute;
   right: 25px;
   background-color: #8c52ff;
-
+border: none;
 }
 .searchForm .clear{
   width: 45px;

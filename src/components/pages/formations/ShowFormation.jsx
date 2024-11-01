@@ -1,5 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useFetchFormation, useJoinFormation, usePayFormation } from "../../../API/formationApi";
+import {
+  useFetchFormation,
+  useJoinFormation,
+  usePayFormation,
+} from "../../../API/formationApi";
 import styles from "./styles.module.css";
 import { IoLogoUsd } from "react-icons/io5";
 import { MdAccessTimeFilled } from "react-icons/md";
@@ -9,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleLoginForm } from "../../../store/popupSlice";
 import { BsCalendar2Date } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import ShowProgramme from "./ShowProgramme";
+import { ThreeCircles } from "react-loader-spinner";
 
 const ShowFormation = () => {
   const navigate = useNavigate();
@@ -30,9 +36,15 @@ const ShowFormation = () => {
   }, [joined, id, myFormations]);
   const handleJoin = () => {
     if (isLoggedIn) {
-      if(formation?.price ==="free" || !formation?.price  || formation?.price === '0'){fetchData(id);}
-     else{fetchPayData({trainingId:id,userId,trainingName:formation?.name})}
-
+      if (
+        formation?.price === "free" ||
+        !formation?.price ||
+        formation?.price === "0"
+      ) {
+        fetchData(id);
+      } else {
+        fetchPayData({ trainingId: id, userId, trainingName: formation?.name ,walletId: formation?.walletId,amount: formation.price});
+      }
     } else dispatch(handleLoginForm());
   };
   const handleOpen = () => {
@@ -42,7 +54,20 @@ const ShowFormation = () => {
     navigate(`/formation/edit/${id}`);
   };
   if (loading) {
-    return <div>Loading...</div>;
+    return (<div className="d-flex justify-content-center align-items-center" style={{
+      width: "100%",
+      height: "100%"
+    }}>
+      <ThreeCircles
+    visible={true}
+    height="100"
+    width="100"
+    color="#rgb(0, 171, 228)"
+    ariaLabel="three-circles-loading"
+    wrapperStyle={{}}
+    wrapperClass=""
+    />;
+      </div>);
   }
 
   if (error) {
@@ -51,6 +76,7 @@ const ShowFormation = () => {
   if (!formation) {
     return <div>no foormation </div>;
   }
+  console.log("the formation is", formation);
   return formation ? (
     <>
       <div className={styles.container}>
@@ -70,7 +96,12 @@ const ShowFormation = () => {
                 {formation.hours}
               </li>
               <li>
-                <a onClick={()=>{console.log(formation.creator);}} href={`http://localhost:3000/profile/${formation?.creator?._id}`}>
+                <a
+                  onClick={() => {
+                    console.log(formation.creator);
+                  }}
+                  href={`http://localhost:3000/profile/${formation?.creator?._id}`}
+                >
                   <GiTeacher />
                   {formation?.creator?.username}
                 </a>
@@ -117,15 +148,26 @@ const ShowFormation = () => {
         )}
       </div>
 
-      <div className={styles.container}>
+      <div className={styles.container} style={{paddingBottom: 0}}>
         <h2 className={styles.name}>What you'll learn</h2>
-        <ul className={styles.programme}>
-          <li>Lorem, ipsum.</li>
-          <li>Lorem, ipsum dolor.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem, ipsum.</li>
-          <li>Lorem, ipsum dolor.</li>
-        </ul>
+        <div className={styles.progImageConatainer}>
+          <ul className={styles.programme}>
+            {formation?.programmes?.map((programme) => {
+              return (
+                <ShowProgramme
+                  id={programme._id}
+                  tile={programme.title}
+                  soustitles={programme.soustitles}
+                />
+              );
+            })}
+          </ul>
+          <div className={styles.imgProgContainer} >
+            <img src="/programme.png" alt="teacher" id="sticky-element"/>  
+          </div>
+        
+
+        </div>
       </div>
     </>
   ) : (

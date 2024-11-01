@@ -12,3 +12,43 @@
   margin-top: 80px;
   margin-bottom: -50px;
 }
+.btnContainer{
+  margin-bottom: 20px;
+height: 6%;
+display: flex;
+display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  margin-left: 25px;
+
+}
+.btnContainer > button{
+  width: 150px;
+height: 100%;
+  margin: auto;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: #ed5e68;
+  border-radius: 30px;
+  color: white;
+}
+.homeBtn{
+  margin-left: auto;
+ color: var(--mainColor);
+}
+.homeBtn:hover{
+  cursor: pointer;
+  transform: scale(1.3);
+  margin: 5px;
+}
+.homeBtnContainer{
+  height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}

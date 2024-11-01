@@ -9,6 +9,7 @@ const initialState = {
   securitySetting: false,
   chatroom: false,
   courroom: false,
+  quizRoom: false,
   
 };
 
@@ -37,17 +38,21 @@ const popupSlice = createSlice({
         handleCoursRoomForm: (state) => {
           state.courroom = !state.courroom;
         },
+        handleQuizRoomForm: (state) => {
+          state.quizRoom = !state.quizRoom;
+        },
         closeForm: (state) => {
           state.login = false;
           state.register = false;
           state.createFormation = false;
           state.contactInformation = false;
           state.securitySetting = false;
+          state.quizRoom = false;
 
         }
         // other reducers for logout, token refresh, etc.
     },
 });
 
-export const { handleLoginForm, handleRegisterForm,handleCreateFormationForm,handleContactInformationForm,handlesecuritySettingForm,closeForm,handleChatRoomForm,handleCoursRoomForm } = popupSlice.actions;
+export const {handleQuizRoomForm, handleLoginForm, handleRegisterForm,handleCreateFormationForm,handleContactInformationForm,handlesecuritySettingForm,closeForm,handleChatRoomForm,handleCoursRoomForm } = popupSlice.actions;
 export default popupSlice.reducer;

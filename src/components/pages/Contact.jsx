@@ -1,153 +1,177 @@
-import React, { useEffect, useRef, useState } from "react";
-import RoomCreation from "./RoomCreation ";
-import { io } from "socket.io-client";
-import Peer from "peerjs";
-import { v4 as uuidV4 } from "uuid";
-
-const url = "http://localhost:5000";
-const token = localStorage.getItem("token");
+import React, { useEffect, useState } from "react";
+import Button from "../common/button/Button";
+import { apiAdminSendEmail, apiuserSendEmail } from "../../API/email";
+import { useSelector } from "react-redux";
+import { handleLoginForm } from "../../store/popupSlice";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import RecivedEmail from "./RecivedEmail";
 
 const Contact = () => {
-  const [videoStreams, setVideoStreams] = useState([]);
-  const [roomId, setRoomId] = useState("");
-  const [userId, setUserId] = useState("");
-  const videoGrid = useRef();
-  const localStream = useRef(null);
-  const [me, setMe] = useState();
-  const socket = useRef(null);
+  const { destinationId , name} = useParams();
+  const user = useSelector((state) => state?.user?.user);
+  const isLoggedIn = useSelector((state) => state?.user.isLoggedIn);
+  const [username, setUsername] = useState(isLoggedIn ? user.username : "");
+  const [email, setEmail] = useState(isLoggedIn ? user.email : "");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
+  const [destination, setDestination] = useState("");
+  const dispatch = useDispatch();
   useEffect(() => {
-    if (socket.current == null) {
-      socket.current = io(url);
-    }
-    const meId = uuidV4();
-    const peer = new Peer(meId, {
-      path: "/myapp",
-      host: "localhost",
-      port: "9000",
-    });
-    setMe(peer);
-    peer.on("open", (id) => {
-      setUserId(id);
-    });
-
-    socket.current.on("user-connected", (userId) => {
-      console.log("User connected: " + userId);
-    });
-
-    socket.current.on("user-disconnected", (userId) => {
-      console.log("User disconnected: " + userId);
-    });
-
-    socket.current.on("get-users", ({ participants }) => {
-      console.log("participants:", participants);
-    });
-
-    navigator.mediaDevices
-      .getUserMedia({
-        video: true,
-        audio: true,
-      })
-      .then((stream) => {
-        localStream.current = stream;
-        addVideoStream(meId, stream);
-
-        peer.on("call", (call) => {
-          call.answer(stream);
-          const video = document.createElement("video");
-          call.on("stream", (userVideoStream) => {
-            addVideoStream(call.peer, userVideoStream);
-          });
-        });
-        socket.current.on("user-joined", ({ peerId }) => {
-          console.log(peerId, "has joined");
-          connectToNewUser(peerId, stream);
-        });
-
-        socket.current.on("user-leaved", (peerId) => {
-          disconnectToUser(userId);
-        });
-      });
-
-    const connectToNewUser = (peerId, stream) => {
-      const call = peer.call(peerId, stream);
-      call.on("stream", (userVideoStream) => {
-        addVideoStream(peerId, userVideoStream);
-      });
-    };
-
-    const addVideoStream = (peerId, stream) => {
-      setVideoStreams((prevStreams) => {
-        if (prevStreams.some((videoStream) => videoStream.peerId === peerId)) {
-          return prevStreams;
-        }
-        return [...prevStreams, { peerId, stream }];
-      });
-    };
-    const disconnectToUser = (peerId) => {
-      setVideoStreams((prevStreams) =>
-        prevStreams.filter((videoStream) => videoStream.peerId !== peerId)
-      );
-    };
-
-    return () => {
-      if (localStream.current) {
-        localStream.current.getTracks().forEach((track) => track.stop());
-      }
-      socket.current.disconnect();
-      peer.destroy();
-    };
-  }, []);
-
-  const joinRoom = () => {
-    if (roomId && me) {
-      socket.current.emit("join-room", { roomId, peerId: me._id });
-    }
+    isLoggedIn ? setUsername(user.username) : setUsername("");
+    isLoggedIn ? setEmail(user.email) : setEmail("");
+  }, [isLoggedIn, user]);
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
   };
-  const createRoom = () => {
-    if (me) {
-      socket.current.emit("create-room");
-    }
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
+  };
+  const handleContent = (e) => {
+    setContent(e.target.value);
+  };
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
   };
 
-  const handleInputValue = (e) => {
-    setRoomId(e.target.value);
+  const handleSendEmail = (e) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      dispatch(handleLoginForm());
+      return;
+    }
+    selectedOption === "admin" ? apiAdminSendEmail(username, email, title, content) :
+    apiuserSendEmail(username, email, title, content,destinationId)
+    
+    setTitle("");
+    setContent("");
   };
-
+  useEffect(() => {
+    if (destinationId && name) {
+      setDestination(name);
+      setSelectedOption("user");
+    } else {
+      setDestination("Admin");
+    }
+    
+  
+  
+  }, [])
+  
   return (
-    <>
-      <div>
-        <div></div>
+    <div className="d-flex">
+    <div
+      style={{
+        width: "80vw",
+        height: "80vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <form style={{ width: "45vw" }}>
+        <fieldset style={{ display: "flex", flexDirection: "column" }}>
 
-        <input
-          type="text"
-          placeholder="Enter Room ID"
-          value={roomId}
-          onChange={handleInputValue}
-        />
-        <button onClick={joinRoom}>Join Room</button>
-        <button onClick={createRoom}>Create Room</button>
-        <div ref={videoGrid}>
-          {videoStreams.map(({ peerId, stream }) => {
-            const videoRef = (video) => {
-              if (video) {
-                video.srcObject = stream;
-                video.addEventListener("loadedmetadata", () => {
-                  video.play();
-                });
-              }
-            };
-            return (
-              <video
-                key={peerId}
-                ref={videoRef}
-                id={peerId}
-                muted={peerId === me._id ? true : false}
+
+
+          <div>
+          <label for="username" class="form-label mt-4">
+                UserName:{" "}
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                value={username}
+                disabled={isLoggedIn}
+                onChange={handleUsername}
               />
-            );
-          })}
-        </div>
-      </div>
-    </>
+          </div>
+
+          <div>
+          <label for="email" class="form-label mt-4">
+                Email Address:{" "}
+              </label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                aria-describedby="emailHelp"
+                value={email}
+                disabled={isLoggedIn}
+                onChange={handleEmail}
+              />
+          </div>
+          <div style={{ display: "flex" ,width:"100%"}}>
+            <div style={{ width:"30%",marginRight: "10%"}}>
+            <label for="choice" class="form-label mt-4">
+              to:
+            </label>
+            <select onChange={handleSelectChange} value={selectedOption} class="form-select" id="choice">
+              {destinationId && name ?  (<>
+                <option value={"admin"}>Admin</option>
+              <option value={"user"}>User</option>
+              </>):(<option value={"admin"}>Admin</option>)}
+            </select>
+            </div>
+            <div style={{ width:"60%"}}>
+            <label for="username" class="form-label mt-4">
+              Destination:{" "}
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              value={selectedOption === "admin" ? "Administrator" : destination}
+              disabled={true}
+            />
+            </div>
+          </div>
+
+          <div>
+            <label for="tile" class="form-label mt-4">
+              Title:{" "}
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="tile"
+              value={title}
+              onChange={handleTitle}
+            />
+          </div>
+
+          <div>
+            <label for="content" class="form-label mt-4">
+              Content:{" "}
+            </label>
+            <textarea
+              class="form-control"
+              id="content"
+              rows="4"
+              value={content}
+              onChange={handleContent}
+            ></textarea>
+          </div>
+
+          <Button
+            parentStyle={{ alignSelf: "center", marginTop: "20px" }}
+            text="Send"
+            type="bgw"
+            w="w200"
+            onClick={handleSendEmail}
+          />
+        </fieldset>
+      </form>
+    </div>
+
+     
+    {/* <RecivedEmail/> */}
+    </div>
   );
 };
 

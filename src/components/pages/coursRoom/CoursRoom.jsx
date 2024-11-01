@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MessageBox, MessageList } from "react-chat-elements";
 import styles from "./styles.module.css";
 import { useSelector } from "react-redux";
 import { sendCours } from "../../../API/courseApi";
 import { saveAs } from "file-saver";
 import axios from "axios";
+import Button from "../../common/button/Button";
 
 const CoursRoom = ({ courRoom }) => {
   const [fileData, setFileData] = useState(null);
   const [courses, setCourses] = useState(null);
+  const containerRef = useRef(null);
+  const fileInputRef = useRef(null);
   const user = useSelector((state) => state.user.user);
 
   // const [data, setData] = useState([]);
@@ -25,7 +28,7 @@ const CoursRoom = ({ courRoom }) => {
 
       socket.on("receiveCourse", (message) => {
         console.log("the message", message);
-        setCourses((prevCoures) => [...prevCoures, {name:message.filename,path:message.path}]);
+        setCourses((prevCoures) => [...prevCoures, {name:message.filename,path:message.path,sender: message.sender}]);
       });
       socket.on("room-chat-created", (data) => {
         console.log("data", data);
@@ -48,6 +51,7 @@ const CoursRoom = ({ courRoom }) => {
     console.log(courRoom);
     fileData && courRoom &&
     await sendCours(fileData,courRoom);
+    fileInputRef.current.value = ""; 
   };
 
   // const downloadFile = (fileName) => {
@@ -72,22 +76,32 @@ const CoursRoom = ({ courRoom }) => {
       console.error("Error downloading the file", error);
     }
   };
+  useEffect(() => {
+    // Scroll to the bottom of the container when the messages array length changes
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [courses?.length]); // Dependency on the length of the messages array
 
 
   return (
     <div className={styles.container}>
       <h1 className="mb-4">Cour Room</h1>
 
-      <div className={styles.courContainr}>
+      <div className={styles.courContainr} ref={containerRef}>
         {courses?.map((crs, index) => {
           const date = new Date(crs.date);
+          console.log("the course",crs);
+          const mymsg = (crs.sender._id === user._id || crs.sender === user._id)
+
           console.log(` http://localhost:5000/cours/${crs.path} `);
           return (
             <MessageBox
               key={index}
-              position={user.role === "Teacher" ? "right" : "left"}
+              position={mymsg ? "right" : "left"}
               type={"file"}
               text={crs.name}
+              title={!mymsg && crs.sender.username}
               date={date}
               data={{
                 uri: `http://localhost:5000/cours/${crs.path}`,
@@ -96,7 +110,7 @@ const CoursRoom = ({ courRoom }) => {
                   loading: 0,
                 },
               }}
-              className={user.role === "Teacher" && styles.msgbox}
+              className={mymsg && styles.msgbox}
               onClick={() =>
                 downloadFile(crs.path)
               }
@@ -105,8 +119,8 @@ const CoursRoom = ({ courRoom }) => {
         })}
       </div>
       <div className={styles.formContainer}>
-        <input type="file" onChange={imageHandler} />
-        <button onClick={sendFileHandler}>Send</button>
+        <input className={styles.uploadFile} type="file" onChange={imageHandler} ref={fileInputRef} />
+        <Button parentStyle={{height: "100%"}} style={{height: "100%"}} text={"Send"} type={"bgw"} w="w100" onClick={sendFileHandler} />
       </div>
     </div>
   );

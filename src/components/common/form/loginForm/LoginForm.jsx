@@ -7,12 +7,13 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { handleLoginForm } from "../../../../store/popupSlice.js";
 import { persistor } from "../../../../store/Store.js";
+import Swal from "sweetalert2";
 
 const LoginForm = () => {
   console.log("login form");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Student");
   const dispatch = useDispatch();
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,29 +29,29 @@ const LoginForm = () => {
       dispatch(loginSuccess(response.data.user));
       dispatch(handleLoginForm());
       console.log(response.data);
-      // Handle successful login (e.g., redirect to dashboard)
     } catch (error) {
       dispatch(loginFailure());
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        // Update UI to inform the user about the error (e.g., show error message)
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser
-        console.log("Error request:", error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log("Error message:", error.message);
-      }
+      if (error.response.data.message) {
+      console.log(error.response.data);
+
+        Swal.fire({
+          icon: "error",
+          title: error.response.data.message,
+        });
+      } 
     }
   };
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
+
   const handlePassword = (e) => {
     setPassword(e.target.value);
   };
+
+
+
+
   const handleRole = (e) => {
     setRole(e.target.value);
   };
@@ -62,13 +63,17 @@ const LoginForm = () => {
         text={"Email address:"}
         value={email}
         onChange={handleEmail}
+        
       />
+
       <Input
         type={"password"}
         id={"passwordRegister"}
         text={"Password:"}
         value={password}
         onChange={handlePassword}
+        
+
       />
       <Input
         type={"radio"}

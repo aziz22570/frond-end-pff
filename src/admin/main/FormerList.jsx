@@ -2,13 +2,28 @@ import React, { useEffect, useState } from 'react'
 import useFetchFormer, { getAllFormer } from '../../API/Teacher'
 import styles from './styles.module.css'
 import Pagination from '../../components/common/pagination/Pagination'
+import { ThreeCircles } from 'react-loader-spinner'
+
 const FormerList = () => {
 const [page , setPage ] = useState(1)
 
 const {Teacher, countFormer,loadingFormer, errorFormer} = useFetchFormer(page,10)
 
   if (loadingFormer) {
-    return ( <div>loading</div>)
+    return (<div className="d-flex justify-content-center align-items-center" style={{
+      width: "100%",
+      height: "100%"
+    }}>
+      <ThreeCircles
+    visible={true}
+    height="100"
+    width="100"
+    color="#rgb(0, 171, 228)"
+    ariaLabel="three-circles-loading"
+    wrapperStyle={{}}
+    wrapperClass=""
+    />;
+      </div>)
   }
   return (
     <div className={styles.listContainer}>

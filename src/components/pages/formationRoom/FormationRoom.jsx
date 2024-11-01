@@ -4,7 +4,6 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { v4 as uuidV4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  initializeSocket,
   videoOn,
   videoOff,
   soundOff,
@@ -17,7 +16,10 @@ import { CiMicrophoneOff, CiMicrophoneOn } from "react-icons/ci";
 import { FiCamera, FiCameraOff } from "react-icons/fi";
 import { useFetchFormation } from "../../../API/formationApi.js";
 import { getUserMedia } from "./utils/getUserMedia.js";
+import { ThreeCircles } from 'react-loader-spinner'
+
 const token = localStorage.getItem("token");
+
 
 const FormationRoom = () => {
   const { id } = useParams();
@@ -32,6 +34,9 @@ const FormationRoom = () => {
   console.log("first peer ", peer);
   const [roomId, setRoomId] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [disabled, setDisabled] = useState(false);
 
 
 
@@ -43,6 +48,9 @@ const FormationRoom = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    socket.on('error', (error) => {
+      console.error("Socket error:", error);
+    });
     if (socket) {
       socket.on("meet-created", (roomId) => {
         console.log("roomId", roomId);
@@ -61,7 +69,10 @@ const FormationRoom = () => {
   }, [socket, peer]);
 
   const joinRoom = () => {
+    console.log("join room started",roomId,peer,id);
     if (roomId && peer && id) {
+    setDisabled(true)
+
       // socket.emit("join-room", { roomId, peerId: peer._id });
       socket.emit("join-meet", {
         userName: user.username,
@@ -72,8 +83,12 @@ const FormationRoom = () => {
   };
 
   const createRoom = () => {
-    // socket.emit("create-room");
-    socket.emit("create-meet", { formationId: id ,peerId:peer._id});
+    console.log("the socket is",socket);
+    
+    if (socket.connected) {
+      console.log("create room", id);
+    }
+    socket?.emit("create-meet", { formationId: id });
   };
 
   const handleInputValue = (value) => {
@@ -82,14 +97,22 @@ const FormationRoom = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     getUserMedia()
       .then((stream) => {
-        myStream.current.srcObject = stream;
-        setStreamOn(true);
+        console.log("the straem is",stream);
+        if(stream){myStream.current.srcObject = stream;
+        setStreamOn(true);}
+        else{throw new Error("no stream")}
+        
       })
       .catch((error) => {
+        setError("Failed to access media devices.");
         console.error("Error accessing media devices.", error);
-      });
+      }).finally(() => {
+        setLoading(false);
+      })
     const video = myStream.current;
     return () => {
       video.srcObject?.getTracks().forEach((track) => {
@@ -101,15 +124,15 @@ const FormationRoom = () => {
   const toggleVideo = () => {
     if (showVideo) {
       dispatch(videoOff());
-      const videoTracks = myStream.current.srcObject.getVideoTracks();
-      videoTracks.forEach((track) => {
+      const videoTracks = myStream.current?.srcObject?.getVideoTracks();
+      videoTracks?.forEach((track) => {
         setShowVideo(false);
         track.enabled = false;
       });
     } else {
       dispatch(videoOn());
-      const videoTracks = myStream.current.srcObject.getVideoTracks();
-      videoTracks.forEach((track) => {
+      const videoTracks = myStream.current?.srcObject?.getVideoTracks();
+      videoTracks?.forEach((track) => {
         setShowVideo(true);
 
         track.enabled = true;
@@ -120,15 +143,15 @@ const FormationRoom = () => {
   const toggleSound = () => {
     if (openSound) {
       dispatch(soundOff());
-      const audioTracks = myStream.current.srcObject.getAudioTracks();
-      audioTracks.forEach((track) => {
+      const audioTracks = myStream.current?.srcObject?.getAudioTracks();
+      audioTracks?.forEach((track) => {
         setOpenSound(false);
         track.enabled = false;
       });
     } else {
       dispatch(soundOn());
-      const audioTracks = myStream.current.srcObject.getAudioTracks();
-      audioTracks.forEach((track) => {
+      const audioTracks = myStream.current?.srcObject?.getAudioTracks();
+      audioTracks?.forEach((track) => {
         setOpenSound(true);
         track.enabled = true;
       });
@@ -169,10 +192,27 @@ const FormationRoom = () => {
       }
     }
   }, [streamOn]);
-
+if(loading){
+  // return (<div className="d-flex justify-content-center align-items-center" style={{
+  //   width: "100%",
+  //   height: "100%"
+  // }}>
+  //   <ThreeCircles
+  // visible={true}
+  // height="100"
+  // width="100"
+  // color="#rgb(0, 171, 228)"
+  // ariaLabel="three-circles-loading"
+  // wrapperStyle={{}}
+  // wrapperClass=""
+  // />;
+  //   </div>)
+}
 
   return (
     <>
+        
+          {error && <p>{error}</p>}
       <div className={styles.container}>
         <div
           className={`${showVideo ? styles.showVideo : styles.hideVideo} ${
@@ -215,6 +255,7 @@ const FormationRoom = () => {
             createRoom={createRoom}
             roomId={roomId}
             handleInputValue={handleInputValue}
+            disabled={disabled}
           />
         </div>
       </div>

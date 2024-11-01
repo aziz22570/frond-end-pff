@@ -8,6 +8,7 @@ import Statistiques from "./main/Statistiques";
 import FormerList from "./main/FormerList";
 import FormationList from "./main/FormationList";
 import StudentList from "./main/StudentList";
+import ListEmail from "../components/pages/email/ListEmail";
 
 const Admin = () => {
   const [activeComponent, setActiveComponent] = useState("Statistiques");
@@ -19,6 +20,8 @@ const Admin = () => {
         return <FormerList/>;
       case "StudentList":
         return <StudentList/>;
+        case "Email":
+          return <ListEmail/>;
 
       case "FormationList":
         return <FormationList/>;

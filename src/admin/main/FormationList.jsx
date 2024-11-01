@@ -2,13 +2,28 @@ import React, { useState } from 'react'
 import styles from './styles.module.css'
 import {useFetchFormation} from '../../API/certif'
 import Pagination from '../../components/common/pagination/Pagination'
+import { ThreeCircles } from 'react-loader-spinner'
+
 const FormationList = () => {
   const [page , setPage ] = useState(1)
 
   const {data, count,loading, error} = useFetchFormation(page,10)
 
     if (loading) {
-      return ( <div>loading</div>)
+      return (<div className="d-flex justify-content-center align-items-center" style={{
+        width: "100%",
+        height: "100%"
+      }}>
+        <ThreeCircles
+      visible={true}
+      height="100"
+      width="100"
+      color="#rgb(0, 171, 228)"
+      ariaLabel="three-circles-loading"
+      wrapperStyle={{}}
+      wrapperClass=""
+      />;
+        </div>)
     }
     return (
       <div className={styles.listContainer}>

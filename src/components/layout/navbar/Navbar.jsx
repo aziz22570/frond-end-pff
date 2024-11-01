@@ -22,6 +22,18 @@ const Navbar = () => {
   const registerForm = useSelector((state) => state.form.register);
   const [selectedItem, setSelectedItem] = useState(null);
 
+
+
+
+
+
+
+
+
+
+
+
+
   useEffect(()=>{
     if(isLoggedIn === false){
       dispatch(loginFailure())
@@ -42,8 +54,8 @@ const Navbar = () => {
   }, [dispatch]);
 
   const data = useMemo(() => [
-    {label: <Link to="/profile"><Button text="My Profil" type="bgw" w="w100" /></Link>,value: 2},
-    {label: <Button text="Log Out" type="bgb" w="w100" onClick={handleLogout} />, value: 1},
+    {label: <Link to="/profile"><Button parentStyle={{width: "100%",margin: 0}}  style={{padding: "8px 0",margin: "10px 0",width:"80%",marginLeft: "10%"}} text="My Profil" type="bgw" w="w100" /></Link>,value: 2},
+    {label: <Button parentStyle={{width: "100%",margin: 0}} style={{padding: "8px 0",margin: "10px 0",width:"80%",marginLeft: "10%"}} text="Log Out" type="bgb" w="w100" onClick={handleLogout} />, value: 1},
   ], [handleLogout]);
 
   const links = useMemo(() => [
@@ -55,7 +67,7 @@ const Navbar = () => {
     {
       id: 2,
       path: "/formations",
-      text: "Formation",
+      text: "Training",
     },
     {
       id: 3,
@@ -106,7 +118,7 @@ const Navbar = () => {
           ))}
         </ul>
         {!isLoggedIn ? (
-          <div className="d-flex">
+          <div className="d-flex" >
             <Button text="login" type="bgw" w="w100" onClick={handleLogin} />
             <Button
               text="sign up"
@@ -116,7 +128,7 @@ const Navbar = () => {
             />
           </div>
         ) : (
-          <div className="d-flex">
+          <div className={`d-flex ${styles.dropDownNav}`}>
             <SimpleDropdown
               disabled
               clearable

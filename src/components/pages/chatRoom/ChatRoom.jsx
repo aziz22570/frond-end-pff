@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 // RCE CSS
 import "react-chat-elements/dist/main.css";
@@ -16,7 +16,7 @@ import { initializeSocket } from "../../../store/socketSlice";
 
 const ChatRoom = ({ chatRoom }) => {
   console.log(chatRoom);
-
+  const containerRef = useRef(null);
   const messageListReferance = React.createRef();
   const inputReferance = React.createRef();
   const [inputValue, setInputValue] = useState("");
@@ -32,10 +32,12 @@ const ChatRoom = ({ chatRoom }) => {
       socket.emit("join-chat-room", chatRoom._id);
 
       socket.on("initialMessages", (initialMessages) => {
+        console.log("initialMessages", initialMessages);
         setMessages(initialMessages);
       });
 
       socket.on("receiveMessage", (message) => {
+        console.log("reciveMessage", message);
         setMessages((prevMessages) => [...prevMessages, message]);
       });
       socket.on("room-chat-created", (data) => {
@@ -43,6 +45,8 @@ const ChatRoom = ({ chatRoom }) => {
     }
     return () => {
       setMessages([])
+      socket && socket.off("initialMessages")
+      socket && socket.off("reciveMessage")
 
     }
   }, [id, socket,chatRoom._id]);
@@ -65,10 +69,18 @@ const ChatRoom = ({ chatRoom }) => {
     }}
 
   };
+  useEffect(() => {
+    // Scroll to the bottom of the container when the messages array length changes
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [messages?.length]); // Dependency on the length of the messages array
+
+  
   return (
     <div className={styles.container}>
       <h1 className="mb-4">{chatRoom?.name}</h1>
-      <div className={`message-list ${styles.messageContainr}`}>
+      <div className={`message-list ${styles.messageContainr}`} ref={containerRef}>
         {messages.map((msg, index) => {
           const date = new Date(msg.date)
           const mymsg = (msg.sender._id === user._id || msg.sender === user._id)

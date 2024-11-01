@@ -16,9 +16,11 @@ const Input = ({
   placeholder,
   updateBtn,
   delBtn,
+  onBlur,
   ...options
 }) => {
   let choix = Object.values(options);
+  console.log(choix);
   return type === "radio" ? (
     <div className="d-flex">
       {choix.map((choix, index) => (
@@ -32,6 +34,7 @@ const Input = ({
             id={index}
             value={choix}
             placeholder={placeholder}
+            disabled={disabled && true}
           />
           <label htmlFor={id}>{choix}</label>
         </div>
@@ -51,6 +54,7 @@ const Input = ({
             onChange={onChange}
             placeholder={placeholder}
             disabled={disabled && true}
+            onBlur={onBlur}
           />
           <div className="position-absolute end-0 m-3 d-flex align-items-center">
 

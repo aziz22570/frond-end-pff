@@ -21,12 +21,14 @@ const RoomNav = ({
   const user = useSelector((state) => state.user.user);
 
   const endMeetHandle = ()=>{
-    socket.emit("end-meet",{meetId:codeRoom,formationId})
+    socket?.emit("end-meet",{meetId:codeRoom,formationId})
     console.log(codeRoom,formationId);
   }
   useEffect(() => {
-    socket.on("meet-ended",({formationId,formationName})=>{
-      navigate(`/formation/${formationId}/${formationName}`)
+    socket?.on("meet-ended",({formationId,formationName})=>{
+      console.log("ended",formationId,formationName);
+      if(formationId && formationName){  navigate(`/formation/${formationId}/${formationName}`)}
+    
     })
   
 

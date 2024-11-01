@@ -6,7 +6,7 @@ export const getUserMedia = async () => {
     });
     return stream;
   } catch (error) {
-    console.error("Error accessing media devices.", error);
+    console.error("Error accessing media devices. hhhh", error);
     throw error;
   }
 };

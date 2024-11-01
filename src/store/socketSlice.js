@@ -35,6 +35,7 @@ export const socketSlice = createSlice({
 export const { setSocket ,videoOn,videoOff,soundOff,soundOn} = socketSlice.actions;
 
 export const initializeSocket = () => (dispatch) => {
+  console.log("the eeeeeeeeee token");
   var connectionOptions = {
 
     "force new connection": true,
@@ -44,8 +45,9 @@ export const initializeSocket = () => (dispatch) => {
     };
   const socket = io(url,connectionOptions);
   socket.on("connect", () => {
-    token &&
-    socket.emit("conected", token);
+    localStorage.getItem("token") &&  socket.emit("conected", localStorage.getItem("token"));
+    console.log("the token is",localStorage.getItem("token"));
+
   });
   dispatch(setSocket(socket));
 };

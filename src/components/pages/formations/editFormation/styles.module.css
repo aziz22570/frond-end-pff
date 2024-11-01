@@ -154,3 +154,17 @@ color: #00800091;
   cursor: pointer;
 
 }
+.uploadButton{
+  width: 90%;
+  padding: 10px;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  background-color: #00a6e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}

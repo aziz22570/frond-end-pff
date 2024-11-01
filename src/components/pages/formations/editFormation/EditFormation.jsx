@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   useFetchFormation,
   useUpdateFormation,
@@ -11,7 +11,9 @@ import styles from "./styles.module.css";
 import Button from "../../../common/button/Button";
 import Input from "../../../common/input/Input";
 import _ from "lodash";
-import { useUpdateUser } from "../../../../API/User";
+import { FiUpload } from "react-icons/fi";
+import Swal from "sweetalert2";
+
 
 const EditFormation = () => {
   const navigate = useNavigate();
@@ -41,6 +43,7 @@ const EditFormation = () => {
   useEffect(() => {
     setButtonValue(show ? "Update" : "Save");
   }, [show]);
+  const hiddenFileInput = useRef(null);
 
   const dataInput = [
     {
@@ -60,7 +63,7 @@ const EditFormation = () => {
     {
       type: "number",
       text: "Price",
-      value: newFormation?.price ? newFormation.price : formation.price,
+      value: (formation.walletId || newFormation.wallet) ? newFormation?.price ? newFormation.price : formation.price : 0,
       key: "price",
     },
 
@@ -76,6 +79,14 @@ const EditFormation = () => {
       value: newFormation?.start ? newFormation.start : formation.start,
       key: "start",
     },
+    {
+      type: "text",
+      text: "Wallet ID ",
+      value: newFormation?.walletId
+        ? newFormation.walletId
+        : formation.walletId,
+      key: "walletId",
+    },
     
   ];
 
@@ -83,16 +94,22 @@ const EditFormation = () => {
     navigate("/");
   }
 
-  const imageHandler = (e) => {
+  const imageHandler = async(e) => {
     const file = e.target.files[0];
-    const formData = new FormData();
+    console.log(file.type);
+      // Check if the selected file is an image
+      if (!file.type.startsWith('image/')) {
+        Swal.fire("Please select a valid image file");
+      }
+        else{
+            const formData = new FormData();
     formData.append("file", file);
-    setImage(formData);
+    await fetchData(formData, "image");
+        }
+  
   };
 
-  const updateImageHandler = async () => {
-    await fetchData(image, "image");
-  };
+
   const addProgrammeHandler = () => {
     setAddProgramme(() => {
       console.log("3 if running", _.cloneDeep(formation.programmes));
@@ -133,6 +150,11 @@ const EditFormation = () => {
   if (error) {
     return <div>{error}</div>;
   }
+  const handleClick = event => {
+    if (!hiddenFileInput || !hiddenFileInput.current) return;
+  
+    hiddenFileInput.current.click();
+  };
 
   return (
     <div className={styles.mainContainer}>
@@ -211,8 +233,8 @@ const EditFormation = () => {
               }
               alt={`${formation.name}`}
             />
-            <input type="file" onChange={imageHandler} />
-            <button onClick={updateImageHandler}>valider</button>
+            <input type="file"  accept="image/*" onChange={imageHandler} ref={hiddenFileInput}  hidden/>
+            <button className={styles.uploadButton} onClick={handleClick}  >Upload {<FiUpload size={22}/>}</button>
           </div>
 
           <div className={styles.participants}>

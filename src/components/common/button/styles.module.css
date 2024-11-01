@@ -72,3 +72,13 @@
   padding: 10px;
   border-radius: 100%;
 }
+.disabledBtn{
+  background-color: #ccc;
+  color: white;
+  cursor: not-allowed;
+}
+
+.disabledBtn:hover{
+  background-color: #ccc;
+  color: white;
+}

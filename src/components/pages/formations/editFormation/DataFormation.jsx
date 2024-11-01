@@ -77,7 +77,7 @@ const DataFormation = ({ dataInput, fetchData, userState }) => {
   };
   return (
     <div>
-      <h3>Lorem, ipsum.</h3>
+      <h3>Training Details:</h3>
       {data?.map((data, index) => (
         <div key={index}>
           {data.text !== "Categorie" ? (
@@ -131,6 +131,19 @@ const DataFormation = ({ dataInput, fetchData, userState }) => {
           )}
         </div>
       ))}
+
+      <div>
+        <h5>show the training to students :</h5>
+        <div className="d-flex" >
+      
+        <input id="yes" type="radio" name="userState" checked={state === true} onClick={()=>{setState(true);fetchData({userState: true});}}/>
+        <label htmlFor="yes">Yes</label>
+        <input  style={{marginLeft: "30px"}} id="no" type="radio" name="userState" checked={state === false} onClick={()=>{setState(false);fetchData({userState: false});}}/>
+        <label htmlFor="no">No</label>
+        
+        </div>
+
+      </div>
       <div className={styles.btnContainer}>
         {!show && (
           <Button text="cancel" type="bgw" w="w100" onClick={cancleUpdateBtn} />
@@ -141,11 +154,6 @@ const DataFormation = ({ dataInput, fetchData, userState }) => {
           w="w100"
           onClick={handleUpdateBtn}
         />
-      </div>
-      <div>
-        <h5>show the training to students :</h5>
-        <input type="radio" name="userState" checked={state === true} onClick={()=>{setState(true);fetchData({userState: true});}}/>
-        <input type="radio" name="userState" checked={state === false} onClick={()=>{setState(false);fetchData({userState: false});}}/>
       </div>
     </div>
   );

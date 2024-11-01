@@ -10,6 +10,7 @@ import { FaChevronRight } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { loginFailure } from "../../store/authSlice";
+import { MdOutlineEmail } from "react-icons/md";
 
 
 
@@ -61,6 +62,13 @@ const Sidebar = ({ className,setActiveComponent,activeComponent }) => {
             <PiCertificateFill size={open ? 20 : 25}  />
           </div>
           {open && <div className={styles.label}>Formation List <span><FaChevronRight/></span></div>}
+        </div>
+
+        <div  onClick={()=>handleActiveComponent('Email')} className={`${styles.itemBox} ${activeComponent === "Email" && styles.active}`}>
+          <div className={styles.icon}>
+            <MdOutlineEmail  size={open ? 20 : 25} />
+          </div>
+          {open && <div className={styles.label}>Email <span><FaChevronRight/></span></div>}
         </div>
       </div>
 

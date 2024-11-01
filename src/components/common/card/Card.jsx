@@ -18,8 +18,8 @@ const Card = ({ id, name, price, hours, creator, image }) => {
         alt=""
       />
       <h3 className={styles.name}>{name}</h3>
-      <h3 className={styles.desc}>price: {price}</h3>
-      <h3 className={styles.desc}>hours: {hours}</h3>
+      <h3 className={styles.desc}>price: {price} TND</h3>
+      <h3 className={styles.desc}>hours: {hours}h</h3>
       <h3 className={styles.creator}>creator: {creator.username}</h3>
       <div className={styles.btn}>
         <Button

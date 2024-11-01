@@ -16,7 +16,7 @@ overflow-y: scroll;
 }
 .formContainer{
   width: 60%;
-  height: 7%;
+  height: 8%;
   border-radius: 30px;
   display: flex;
   justify-content: center;
@@ -32,4 +32,31 @@ overflow-y: scroll;
 }
 .msgbox > div >div > div{
   color: white;
+}
+/** handle input* */
+.uploadFile {
+  width: 350px;
+  max-width: 100%;
+  color: black;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid var(--mainColor);
+}
+
+.uploadFile:focus {
+  outline: 2px dashed var(--mainColor);
+  outline-offset: 2px;
+}
+
+.uploadFile::file-selector-button {
+  margin-right: 8px;
+  border: none;
+  background: var(--mainColor);
+  padding: 8px 12px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.uploadFile::file-selector-button:hover {
+  background: #4747b8;
 }

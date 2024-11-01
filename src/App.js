@@ -22,7 +22,6 @@ export default function App() {
   useCheckUserLogin();
   const meeting = useSelector((state) => state.user.meeting);
   const admin = useSelector((state) => state.user.admin);
-  console.log('Environment Variables:', process.env);
   return (
     <div className="App">
       <Router>
@@ -89,6 +88,7 @@ export default function App() {
               }
             />
 
+            <Route path="/contact/:destinationId/:name" element={<Contact />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/formations" element={<Formations />} />
             <Route path="/formations/:search" element={<FormationSearch />} />

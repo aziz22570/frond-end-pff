@@ -16,6 +16,7 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import "./grid.css";
 import { Input } from "react-chat-elements";
 import ChatMeet from "./chatmeet/ChatMeet.jsx";
+import { disconnectPeer } from "../../../store/peerSlice.js";
 
 const Room = () => {
   const navigate = useNavigate();
@@ -37,15 +38,26 @@ const Room = () => {
   );
   const [showChatmeet,setChowChatMeet] = useState(false);
   const [messages,setMessages] = useState([])
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
 
-  if (!peer) {
-    navigate("/formation/room/");
-  }
-  socket.emit("seend-peer", { peerId: peer._id, meetId: codeRoom });
+
+
+console.log("the peer is", peer);
+  useEffect(() => {
+    if (!peer) {
+      navigate("/formation/room/");
+    }
+  
+
+  }, [peer,navigate])
+  
+
+  socket && socket.emit("seend-peer", { peerId: peer._id, meetId: codeRoom });
 
   useEffect(() => {
-    peer.on("open", (id) => {
+    peer?.on("open", (id) => {
       console.log("id: " + id);
     });
 
@@ -57,7 +69,7 @@ const Room = () => {
     // console.log(peerId, "has joined");
     // connectToNewUser(peerId, stream);
     // })
-    socket.on("request-join", ({ socketId, userId, meetId, peerId }) => {
+    socket?.on("request-join", ({ socketId, userId, meetId, peerId }) => {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -77,7 +89,8 @@ const Room = () => {
         }
       });
     });
-
+ setLoading(true);
+      setError(null);
     navigator.mediaDevices
       .getUserMedia({
         video: true,
@@ -109,8 +122,11 @@ const Room = () => {
         });
       })
       .catch((error) => {
+        setError("Failed to access media devices.");
         console.error("Error accessing media devices.", error);
-      });
+      }).finally(() => {
+        setLoading(false);
+      })
 
     const connectToNewUser = (peerId, stream) => {
       const call = peer.call(peerId, stream);
@@ -139,18 +155,18 @@ const Room = () => {
     window.addEventListener("beforeunload", disconect);
     const video = localStream.current;
     return () => {
+      disconnectPeer()
       window.removeEventListener("beforeunload", () => disconect);
 
-      if ( video) {
-video.srcObject.getVideoTracks().map(track =>track.stop())
+video?.srcObject?.getVideoTracks()?.map(track =>track.stop())
       disconect();
-    };}
+}
   
-  }, [codeRoom,openSound,showVideo]);
+  }, [codeRoom]);
   const disconect = () => {
-    socket.emit("disconnectingg", { peerId: peer._id, roomId: codeRoom,role:user.role ,formationId});
-    socket.disconnect();
-    peer.destroy();
+    socket?.emit("disconnectingg", { peerId: peer._id, roomId: codeRoom,role:user.role ,formationId});
+    socket?.disconnect();
+    peer?.destroy();
   };
 
   const toggleSound = () => {
@@ -172,17 +188,18 @@ video.srcObject.getVideoTracks().map(track =>track.stop())
   };
 
   const toggleVideo = () => {
+    console.log("video toggle");
     if (showVideo) {
       dispatch(videoOff());
       const videoTracks = localStream.current?.srcObject?.getVideoTracks();
-      videoTracks.forEach((track) => {
+      videoTracks?.forEach((track) => {
         setShowVideo(false);
         track.enabled = false;
       });
     } else {
       dispatch(videoOn());
       const videoTracks = localStream.current?.srcObject?.getVideoTracks();
-      videoTracks.forEach((track) => {
+      videoTracks?.forEach((track) => {
         setShowVideo(true);
 
         track.enabled = true;

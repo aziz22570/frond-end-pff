@@ -8,8 +8,6 @@ body{
   color: #1e375a;
   box-sizing: border-box;
   background-color: #f5f7f8;
-  height: 100vh;
-  width: 100vw;
 }
 
 :root{
